@@ -12,14 +12,7 @@ cnx = c.connect(
 
 cr = cnx.cursor()
 
-cr.execute("""
-        SELECT COUNT(*)
-        FROM information_schema.tables
-        WHERE table_name = 'bill'""")
-
-for i in cr.fetchone():
-    if i == 'bill':
-        cr.execute('drop table bill')
+cr.execute('drop table bill')
 
 
 def empmod():
@@ -176,7 +169,9 @@ def itemquery():
                 with open('test.csv', 'w', newline='') as f_output:
                     f_output.write(b.get_csv_string())
                 cr.execute('drop table bill')
+                break
             else:
+                os.system('clear')
                 continue
 
 
