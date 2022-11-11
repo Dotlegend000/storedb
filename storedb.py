@@ -139,12 +139,10 @@ def itemquery():
     price int(5))'''
     cr.execute(s)
 
-    cr.execute("select * from item")
-
-    i = from_db_cursor(cr)
-    print(i)
-
     while True:
+        cr.execute("select * from item")
+        i = from_db_cursor(cr)
+        print(i)
         src = input("Enter Item name: ")
         k = "select itemname,price from item where itemname='{}'".format(src)
         cr.execute(k)
@@ -152,6 +150,7 @@ def itemquery():
 
         if cr.rowcount == 0:
             print("Item not Found")
+            break
         else:
             print("Item name:", q[0], "Price:", q[1])
             h = int(input("Enter quantity of item: "))
