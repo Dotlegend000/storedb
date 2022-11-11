@@ -1,16 +1,25 @@
 import mysql.connector as c
+import os
 from prettytable import from_db_cursor
-
+from pyfiglet import Figlet
 
 cnx = c.connect(
     host="localhost",
     user="root",
     password="",
-    database="store",
-    charset="utf8"
+    database='store'
 )
 
 cr = cnx.cursor()
+
+cr.execute("""
+        SELECT COUNT(*)
+        FROM information_schema.tables
+        WHERE table_name = 'bill'""")
+
+for i in cr.fetchone():
+    if i == 'bill':
+        cr.execute('drop table bill')
 
 
 def empmod():
@@ -93,12 +102,12 @@ def itemadd():
 
 def itemremove():
     cr.execute("select * from item")
-    
-    i=from_db_cursor(cr)
+
+    i = from_db_cursor(cr)
     print(i)
-    
+
     src = int(input("Enter the item no to remove: "))
-    
+
     cr.execute("delete from item where ino={}"
                .format(src))
 
@@ -114,7 +123,7 @@ def itemremove():
 
 def empremove():
     cr.execute("select * from emp")
-    e=from_db_cursor(cr)
+    e = from_db_cursor(cr)
     print(e)
     src = int(input("Enter the emp no to remove: "))
 
@@ -132,45 +141,131 @@ def empremove():
 
 
 def itemquery():
-    cr.execute(
-                '''create table bill(
-                ino int(3),
-                inm varchar(20),
-                qty int(2),
-                price int(5))'''
-            )
+    s = '''create table bill (inm varchar(20),
+    qty int(2),
+    price int(5))'''
+    cr.execute(s)
+
+    cr.execute("select * from item")
+
+    i = from_db_cursor(cr)
+    print(i)
+
     while True:
         src = input("Enter Item name: ")
-        cr.execute("select * from item where itemname='{}'".format(src))
+        k = "select itemname,price from item where itemname='{}'".format(src)
+        cr.execute(k)
         q = cr.fetchone()
 
         if cr.rowcount == 0:
             print("Item not Found")
         else:
-            print("Item no:", q[0], "Item name:", q[1], "Price:", q[2])
+            print("Item name:", q[0], "Price:", q[1])
             h = int(input("Enter quantity of item: "))
-            cr.execute("insert into bill values({},'{}',{},{})".format(
-                q[0], q[1], h, q[2]))
+            cr.execute("insert into bill values('{}',{},{})".format(
+                q[0], h, q[1]))
 
             print("Do you have more items ? (Y/N)")
             k = input('Yes(Y) or No(N): ')
             if k not in 'Yy':
                 print("Added to Bill")
                 cnx.commit()
-                cr.execute('select * from bill')
+                cr.execute("select *,qty*price as tot_price from bill")
                 b = from_db_cursor(cr)
                 print(b)
-                break
+                with open('test.csv', 'w', newline='') as f_output:
+                    f_output.write(b.get_csv_string())
+                cr.execute('drop table bill')
             else:
                 continue
 
 
-# empmod()
-# itemmod()
-# empadd()
-# itemadd()
-itemremove()
-# empremove()
-# itemquery()
-# cr.execute('drop table bill')
+def ici():
+    print('''                         ╔═════════════════════════════╗
+                         ║                             ║
+                         ║     ~ Incorrect Input ~     ║
+                         ║                             ║
+                         ╚═════════════════════════════╝''')
+
+
+os.system('clear')
+
+f = Figlet(font='banner3', justify="center")
+print(f.renderText('Store'))
+
+print('''               ╔═════════════════════════════════════════════╗
+               ║                                             ║
+               ║          ~ Press Enter For Login ~          ║
+               ║                                             ║
+               ╚═════════════════════════════════════════════╝''')
+
+
+difffff = input(' ')
+
+os.system('clear')
+
+log = input("\t\t\tEnter username: ")
+pas = input("\t\t\tEnter password: ")
+
+os.system('clear')
+
+if log == "admin" and pas == "user":
+    print('''                          ╔════════════════════════════╗
+                          ║          1.Add             ║
+                          ║          2.Remove          ║
+                          ║          3.Modify          ║
+                          ║          4.Exit            ║
+                          ╚════════════════════════════╝''')
+    while True:
+        ch = input("\t\t\tEnter your choice: ")
+        os.system('clear')
+        if ch == '1':
+            print('''                             ╔═════════════════════╗
+                             ║     1.Items         ║
+                             ║     2.Employees     ║
+                             ╚═════════════════════╝''')
+            cho = input("\t\t\tEnter your choice: ")
+            if cho == '1':
+                itemadd()
+            elif cho == '2':
+                empadd()
+            else:
+                ici()
+
+        elif ch == '2':
+            print('''                             ╔═════════════════════╗
+                             ║     1.Items         ║
+                             ║     2.Employees     ║
+                             ╚═════════════════════╝''')
+            cho = input("\t\t\tEnter your choice: ")
+            if cho == '1':
+                itemremove()
+            elif cho == '2':
+                empremove()
+            else:
+                ici()
+
+        elif ch == '3':
+            print('''                             ╔═════════════════════╗
+                             ║     1.Items         ║
+                             ║     2.Employees     ║
+                             ╚═════════════════════╝''')
+            cho = input("\t\t\tEnter your choice: ")
+            if cho == '1':
+                itemmod()
+            elif cho == '2':
+                empmod()
+            else:
+                ici()
+        elif ch == '4':
+            break
+        else:
+            ici()
+
+elif log == "cashier" and pas == "cash":
+    while True:
+        itemquery()
+        ch = input("Do you want to exit (Y/N) : ")
+        if ch not in "Yy":
+            break
 cnx.close()
