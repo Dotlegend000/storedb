@@ -1,6 +1,6 @@
 import os
 
-import mysql.connector as c
+import mariadb as c
 from prettytable import from_db_cursor
 from pyfiglet import Figlet
 
@@ -8,7 +8,7 @@ cnx = c.connect(host="localhost", user="root", password="", database="store")
 
 cr = cnx.cursor()
 
-cr.execute("drop table bill")
+
 
 
 def empmod():
