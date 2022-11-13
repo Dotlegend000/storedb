@@ -4,5 +4,6 @@
     "python.linting.enabled": true,
     "python.formatting.provider": "black",
     "python.linting.flake8Args": [
-            "--max-line-length=120"]
+        "--max-line-length=120"
+    ]
 }

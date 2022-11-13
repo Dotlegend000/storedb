@@ -8,13 +8,20 @@ cnx = c.connect(host="localhost", user="root", password="", database="store")
 
 cr = cnx.cursor()
 
-
+s = """create table bill (inm varchar(20),
+    qty int(2),
+    price int(5))"""
+cr.execute(s)
 
 
 def empmod():
+    cr.execute("select * from emp")
+
+    i = from_db_cursor(cr)
+    print(i)
     src = int(input("Which Employee no is to be modified: "))
     neno = int(input("Enter new Employee no: "))
-    nename = input("Enter new Employee name: ")
+    nename = input("Enter new Employee name: ").capitalize()
     nsal = int(input("Enter new Salary: "))
 
     cr.execute(
@@ -34,9 +41,13 @@ def empmod():
 
 
 def itemmod():
+    cr.execute("select * from item")
+
+    i = from_db_cursor(cr)
+    print(i)
     src = int(input("Which Item no is to be modified: "))
     nino = int(input("Enter new Item no: "))
-    niname = input("Enter new Item name: ")
+    niname = input("Enter new Item name: ").capitalize()
     np = int(input("Enter new Price: "))
 
     cr.execute(
@@ -59,8 +70,12 @@ def itemmod():
 
 
 def empadd():
+    cr.execute("select * from emp")
+
+    i = from_db_cursor(cr)
+    print(i)
     eno = int(input("Enter Employee no: "))
-    ename = input("Enter Employee name: ")
+    ename = input("Enter Employee name: ").capitalize()
     sal = int(input("Enter Salary: "))
 
     cr.execute("insert into emp values({},'{}',{})".format(eno, ename, sal))
@@ -76,8 +91,12 @@ def empadd():
 
 
 def itemadd():
+    cr.execute("select * from item")
+
+    i = from_db_cursor(cr)
+    print(i)
     ino = int(input("Enter new Item no: "))
-    iname = input("Enter new Item name: ")
+    iname = input("Enter new Item name: ").capitalize()
     price = int(input("Enter new Price: "))
 
     cr.execute("insert into item values({},'{}',{})".format(ino, iname, price))
@@ -100,13 +119,13 @@ def itemremove():
 
     src = int(input("Enter the item no to remove: "))
 
-    cr.execute("delete from item where ino={}".format(src))
+    cr.execute("delete from item where itemno={}".format(src))
 
     if cr.rowcount == 0:
         print("Not Deleted !!!")
     else:
         print("Successfully Deleted")
-        cr.execute("select * from item where ino={}".format(src))
+        cr.execute("select * from item where itemno={}".format(src))
         print(cr.fetchall())
 
     cnx.commit()
@@ -131,23 +150,17 @@ def empremove():
 
 
 def itemquery():
-    s = """create table bill (inm varchar(20),
-    qty int(2),
-    price int(5))"""
-    cr.execute(s)
-
     while True:
         cr.execute("select * from item")
         i = from_db_cursor(cr)
         print(i)
-        src = input("Enter Item name: ")
+        src = input("Enter Item name: ").capitalize()
         k = "select itemname,price from item where itemname='{}'".format(src)
         cr.execute(k)
         q = cr.fetchone()
 
         if cr.rowcount == 0:
             print("Item not Found")
-            break
         else:
             print("Item name:", q[0], "Price:", q[1])
             h = int(input("Enter quantity of item: "))
@@ -155,7 +168,7 @@ def itemquery():
 
             print("Do you have more items ? (Y/N)")
             k = input("Yes(Y) or No(N): ")
-            if k not in "Yy":
+            if k in "Nn":
                 print("Added to Bill")
                 cnx.commit()
                 cr.execute("select *,qty*price as tot_price from bill")
@@ -165,9 +178,11 @@ def itemquery():
                     f_output.write(b.get_csv_string())
                 cr.execute("drop table bill")
                 break
-            else:
+            elif k in "Yy":
                 os.system("clear")
                 continue
+            else:
+                ici()
 
 
 def ici():
@@ -204,15 +219,15 @@ pas = input("\t\t\tEnter password: ")
 os.system("clear")
 
 if log == "admin" and pas == "user":
-    print(
-        """                          ╔════════════════════════════╗
+    while True:
+        print(
+            """                          ╔════════════════════════════╗
                           ║          1.Add             ║
                           ║          2.Remove          ║
                           ║          3.Modify          ║
                           ║          4.Exit            ║
                           ╚════════════════════════════╝"""
-    )
-    while True:
+        )
         ch = input("\t\t\tEnter your choice: ")
         os.system("clear")
         if ch == "1":
@@ -268,6 +283,9 @@ elif log == "cashier" and pas == "cash":
     while True:
         itemquery()
         ch = input("Do you want to exit (Y/N) : ")
-        if ch not in "Yy":
+        if ch in "Yy":
             break
+        if ch in "Nn":
+            continue
+
 cnx.close()
