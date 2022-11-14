@@ -8,6 +8,8 @@ cnx = c.connect(host="localhost", user="root", password="", database="store")
 
 cr = cnx.cursor()
 
+cr.execute("drop table if exists bill")
+
 s = """create table bill (inm varchar(20),
     qty int(2),
     price int(5))"""
@@ -179,7 +181,7 @@ def itemquery():
                 cr.execute("drop table bill")
                 break
             elif k in "Yy":
-                os.system("clear")
+                os.system("cls")
                 continue
             else:
                 ici()
@@ -195,7 +197,7 @@ def ici():
     )
 
 
-os.system("clear")
+os.system("cls")
 
 f = Figlet(font="banner3", justify="center")
 print(f.renderText("Store"))
@@ -211,12 +213,12 @@ print(
 
 difffff = input(" ")
 
-os.system("clear")
+os.system("cls")
 
 log = input("\t\t\tEnter username: ")
 pas = input("\t\t\tEnter password: ")
 
-os.system("clear")
+os.system("cls")
 
 if log == "admin" and pas == "user":
     while True:
@@ -229,7 +231,7 @@ if log == "admin" and pas == "user":
                           ╚════════════════════════════╝"""
         )
         ch = input("\t\t\tEnter your choice: ")
-        os.system("clear")
+        os.system("cls")
         if ch == "1":
             print(
                 """                             ╔═════════════════════╗
