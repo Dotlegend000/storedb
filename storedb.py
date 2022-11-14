@@ -1,6 +1,6 @@
 import os
 
-import mariadb as c
+import mysql.connector as c
 from prettytable import from_db_cursor
 from pyfiglet import Figlet
 
@@ -240,6 +240,7 @@ if log == "admin" and pas == "user":
                              ╚═════════════════════╝"""
             )
             cho = input("\t\t\tEnter your choice: ")
+            os.system("cls")
             if cho == "1":
                 itemadd()
             elif cho == "2":
@@ -255,6 +256,7 @@ if log == "admin" and pas == "user":
                              ╚═════════════════════╝"""
             )
             cho = input("\t\t\tEnter your choice: ")
+            os.system("cls")
             if cho == "1":
                 itemremove()
             elif cho == "2":
@@ -270,6 +272,7 @@ if log == "admin" and pas == "user":
                              ╚═════════════════════╝"""
             )
             cho = input("\t\t\tEnter your choice: ")
+            os.system("cls")
             if cho == "1":
                 itemmod()
             elif cho == "2":
@@ -289,5 +292,7 @@ elif log == "cashier" and pas == "cash":
             break
         if ch in "Nn":
             continue
+
+os.system("cls")
 
 cnx.close()
