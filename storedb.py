@@ -1,12 +1,15 @@
 import os
-
 import mysql.connector as c
 from prettytable import from_db_cursor
 from pyfiglet import Figlet
 
-cnx = c.connect(host="localhost", user="root", password="", database="store")
+cnx = c.connect(
+    host="localhost", user="root", password="", database="store", charset="utf8"
+)
 
 cr = cnx.cursor()
+
+cr.execute("source store.sql")
 
 cr.execute("drop table if exists bill")
 
