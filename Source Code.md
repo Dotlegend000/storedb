@@ -2,7 +2,6 @@
 
 ```python
 import os
-
 import mysql.connector as c
 from prettytable import from_db_cursor
 from pyfiglet import Figlet
@@ -11,7 +10,21 @@ cnx = c.connect(host="localhost", user="root", password="", database="store")
 
 cr = cnx.cursor()
 
+cr.execute("DROP TABLE IF EXISTS emp")
+cr.execute("drop table if exists item")
 cr.execute("drop table if exists bill")
+
+e = "CREATE TABLE emp (eno int(5),ename varchar(20),sal int(10))"
+cr.execute(e)
+cr.execute(
+    """INSERT INTO emp VALUES (1,'Aryan',99999),(2,'Bhagath',30000),(3,'Chinmay',70000)"""
+)
+
+i = "CREATE TABLE `item` (itemno int(5),itemname varchar(20),price float)"
+cr.execute(i)
+cr.execute(
+    """INSERT INTO `item` VALUES(101,'Apple',10),(102,'Banana',20),(103,'Pen',40)"""
+)
 
 s = """create table bill (inm varchar(20),
     qty int(2),
@@ -202,101 +215,94 @@ def ici():
 
 os.system("cls")
 
-f = Figlet(font="banner3", justify="center")
-print(f.renderText("Store"))
-
-print(
-    """               ╔═════════════════════════════════════════════╗
+while True:
+    f = Figlet(font="banner3", justify="center")
+    print(f.renderText("Store"))
+    print(
+        """               ╔═════════════════════════════════════════════╗
                ║                                             ║
                ║          ~ Press Enter For Login ~          ║
                ║                                             ║
                ╚═════════════════════════════════════════════╝"""
-)
-
-
-difffff = input(" ")
-
-os.system("cls")
-
-log = input("\t\t\tEnter username: ")
-pas = input("\t\t\tEnter password: ")
-
-os.system("cls")
-
-if log == "admin" and pas == "user":
-    while True:
-        print(
-            """                          ╔════════════════════════════╗
+    )
+    difffff = input(" ")
+    os.system("cls")
+    log = input("\t\t\tEnter username: ")
+    pas = input("\t\t\tEnter password: ")
+    os.system("cls")
+    if log == "admin" and pas == "user":
+        while True:
+            print(
+                """                          ╔════════════════════════════╗
                           ║          1.Add             ║
                           ║          2.Remove          ║
                           ║          3.Modify          ║
                           ║          4.Exit            ║
                           ╚════════════════════════════╝"""
-        )
-        ch = input("\t\t\tEnter your choice: ")
-        os.system("cls")
-        if ch == "1":
-            print(
-                """                             ╔═════════════════════╗
+            )
+            ch = input("\t\t\tEnter your choice: ")
+            os.system("cls")
+            if ch == "1":
+                print(
+                    """                             ╔═════════════════════╗
                              ║     1.Items         ║
                              ║     2.Employees     ║
                              ╚═════════════════════╝"""
-            )
-            cho = input("\t\t\tEnter your choice: ")
-            os.system("cls")
-            if cho == "1":
-                itemadd()
-            elif cho == "2":
-                empadd()
-            else:
-                ici()
+                )
+                cho = input("\t\t\tEnter your choice: ")
+                os.system("cls")
+                if cho == "1":
+                    itemadd()
+                elif cho == "2":
+                    empadd()
+                else:
+                    ici()
 
-        elif ch == "2":
-            print(
-                """                             ╔═════════════════════╗
+            elif ch == "2":
+                print(
+                    """                             ╔═════════════════════╗
                              ║     1.Items         ║
                              ║     2.Employees     ║
                              ╚═════════════════════╝"""
-            )
-            cho = input("\t\t\tEnter your choice: ")
-            os.system("cls")
-            if cho == "1":
-                itemremove()
-            elif cho == "2":
-                empremove()
-            else:
-                ici()
+                )
+                cho = input("\t\t\tEnter your choice: ")
+                os.system("cls")
+                if cho == "1":
+                    itemremove()
+                elif cho == "2":
+                    empremove()
+                else:
+                    ici()
 
-        elif ch == "3":
-            print(
-                """                             ╔═════════════════════╗
+            elif ch == "3":
+                print(
+                    """                             ╔═════════════════════╗
                              ║     1.Items         ║
                              ║     2.Employees     ║
                              ╚═════════════════════╝"""
-            )
-            cho = input("\t\t\tEnter your choice: ")
-            os.system("cls")
-            if cho == "1":
-                itemmod()
-            elif cho == "2":
-                empmod()
+                )
+                cho = input("\t\t\tEnter your choice: ")
+                os.system("cls")
+                if cho == "1":
+                    itemmod()
+                elif cho == "2":
+                    empmod()
+                else:
+                    ici()
+            elif ch == "4":
+                cnx.close()
+                exit()
             else:
                 ici()
-        elif ch == "4":
-            break
-        else:
-            ici()
 
-elif log == "cashier" and pas == "cash":
-    while True:
-        itemquery()
-        ch = input("Do you want to exit (Y/N) : ")
-        if ch in "Yy":
-            break
-        if ch in "Nn":
-            continue
-
-os.system("cls")
-
-cnx.close()
+    elif log == "cashier" and pas == "cash":
+        while True:
+            itemquery()
+            ch = input("Do you want to exit (Y/N) : ")
+            if ch in "Yy":
+                cnx.close()
+                exit()
+            elif ch in "Nn":
+                continue
+            os.system("cls")
 ```
