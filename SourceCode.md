@@ -88,6 +88,7 @@ def itemmod():
 
 
 def empadd():
+    os.system('cls')
     cr.execute("select * from emp")
 
     i = from_db_cursor(cr)
@@ -232,6 +233,7 @@ while True:
     os.system("cls")
     if log == "admin" and pas == "user":
         while True:
+            os.system('cls')
             print(
                 """                          ╔════════════════════════════╗
                           ║          1.Add             ║
