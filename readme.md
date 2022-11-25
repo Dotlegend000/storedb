@@ -17,7 +17,7 @@ The user Cashier has the ability to create a bill from the table item and export
 Python 3.8 or later\
 MySQL 8.0 or later\
 
-Python Modules: Prettytable, pyfiglet,mysql-connector-python( comes with MySQL installer )
+Python Modules: [Prettytable](https://pypi.org/project/prettytable/) , [pyfiglet](https://pypi.org/project/pyfiglet/) , mysql-connector-python( comes with MySQL installer )
 
 ### To install the modules:
 
