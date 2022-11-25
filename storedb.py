@@ -14,7 +14,7 @@ cr.execute("drop table if exists bill")
 e = "CREATE TABLE emp (eno int(5),ename varchar(20),sal int(10))"
 cr.execute(e)
 cr.execute(
-    """INSERT INTO emp VALUES (1,'Aryan',99999),(2,'Bhagath',30000),(3,'Chinmay',70000)"""
+    """INSERT INTO emp VALUES (1,'Manager',99999),(2,'Sweeper',30000),(3,'Cashier',70000)"""
 )
 
 i = "CREATE TABLE `item` (itemno int(5),itemname varchar(20),price float)"
